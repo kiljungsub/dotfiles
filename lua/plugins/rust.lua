@@ -8,6 +8,14 @@ vim.g.rustaceanvim = {
 			},
 		},
 	},
+	dap = {
+		-- Not detected automatically because of the version suffix
+		adapter = {
+			type = "executable",
+			command = "/usr/bin/lldb-dap-19",
+			name = "rt_lldb",
+		},
+	},
 }
 
 vim.pack.add({
@@ -43,8 +51,8 @@ require("crates").setup({
 			version = "%s",
 			prerelease = "%s pre-release",
 			yanked = "%s yanked",
-			enabled = "* s",
-			transitive = "~ s",
+			enabled = "* %s",
+			transitive = "~ %s",
 			normal_dependencies_title = "  Dependencies",
 			build_dependencies_title = "  Build dependencies",
 			dev_dependencies_title = "  Dev dependencies",

@@ -1,7 +1,8 @@
 vim.pack.add({
 	"https://github.com/hrsh7th/cmp-nvim-lsp",
-	"https://github.com/github/copilot.vim",
+	"https://github.com/hrsh7th/cmp-buffer",
 	"https://github.com/hrsh7th/nvim-cmp",
+	"https://github.com/github/copilot.vim",
 })
 
 local cmp = require("cmp")

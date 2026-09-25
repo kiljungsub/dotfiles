@@ -10,13 +10,14 @@ require("mason").setup({
 
 require("mason-lspconfig").setup({
 	ensure_installed = {},
+	-- stylua already formats through none-ls
+	automatic_enable = { exclude = { "stylua" } },
 })
 
-local capabilities = require("cmp_nvim_lsp").default_capabilities()
+vim.lsp.config("*", { capabilities = require("cmp_nvim_lsp").default_capabilities() })
 
-vim.lsp.config("lua_ls", { capabilities = capabilities })
-vim.lsp.config("ts_ls", { capabilities = capabilities })
-vim.lsp.config("postgres_lsp", {})
+-- rust-analyzer is started by rustaceanvim, don't enable it here
+vim.lsp.enable({ "lua_ls", "ts_ls", "postgres_lsp" })
 
 vim.keymap.set("n", "K", vim.lsp.buf.hover, {})
 vim.keymap.set("n", "gd", vim.lsp.buf.definition, {})
