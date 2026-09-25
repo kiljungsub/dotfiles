@@ -22,9 +22,7 @@ vim.g.maplocalleader = "\\"
 vim.opt.nu = true
 vim.opt.rnu = false
 
--- code folding
-vim.opt.foldmethod = "expr"
-vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
+-- code folding (treesitter foldexpr is set per buffer in plugins/treesitter.lua)
 vim.opt.foldlevel = 99
 
 -- code
