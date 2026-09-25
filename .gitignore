@@ -1,0 +1,17 @@
+# Vim/Neovim swap, backup and undo files
+*.swp
+*.swo
+*~
+.netrwhist
+Session.vim
+undo/
+
+# Local tags
+tags
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Local-only overrides (not shared across machines)
+*.local.lua
