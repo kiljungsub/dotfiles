@@ -1,6 +1,7 @@
 # Neovim config
 
-Personal Neovim configuration, managed with [lazy.nvim](https://github.com/folke/lazy.nvim).
+Personal Neovim configuration. Plugins are managed with Neovim's built-in
+[`vim.pack`](https://neovim.io/doc/user/pack.html#vim.pack).
 Main focus: Rust, Lua, TypeScript/JavaScript and Python.
 
 ## Requirements
@@ -22,18 +23,24 @@ git clone <repo-url> ~/.config/nvim
 nvim
 ```
 
-lazy.nvim bootstraps itself on first start and installs the plugins at the
-versions pinned in `lazy-lock.json`.
+On first start `vim.pack` asks to install the plugins and installs them at the
+revisions pinned in `nvim-pack-lock.json`. Treesitter parsers are then built
+in the background.
 
 ## Layout
 
 ```
 init.lua              entry point
 lua/vim-options.lua   editor options, leader keys
-lua/config/lazy.lua   lazy.nvim bootstrap
-lua/plugins/          one file per plugin (or group of plugins)
+lua/config/pack.lua   build hooks and load order of plugin modules
+lua/plugins/          one file per plugin (or group of plugins); each calls
+                      vim.pack.add() and then configures its plugins
 after/ftplugin/       filetype-specific overrides
+nvim-pack-lock.json   plugin revisions (commit this)
 ```
+
+To add a plugin, add it to a `vim.pack.add()` call (or a new file in
+`lua/plugins/` required from `lua/config/pack.lua`) and restart.
 
 ## Key mappings
 
@@ -88,6 +95,11 @@ Leader is `<Space>`, local leader is `\`.
 
 ## Updating plugins
 
-- `:Lazy update` updates plugins and rewrites `lazy-lock.json`; commit the lockfile afterwards.
-- `:Lazy restore` reverts plugins to the versions in `lazy-lock.json`.
-- `:TSUpdate` updates treesitter parsers.
+- `:lua vim.pack.update()` fetches updates and opens a review buffer.
+  `:w` applies them, `:q` discards them. Commit `nvim-pack-lock.json` afterwards.
+- `:lua vim.pack.update(nil, { target = "lockfile" })` puts plugins back at
+  the revisions in `nvim-pack-lock.json` (e.g. after `git pull` or to undo an update).
+- Treesitter parsers are updated automatically when nvim-treesitter updates;
+  `:TSUpdate` does it manually.
+- To remove a plugin, delete it from the config, restart, then
+  `:lua vim.pack.del({ "plugin-name" })`.
