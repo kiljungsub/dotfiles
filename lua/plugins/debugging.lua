@@ -21,11 +21,19 @@ dap.listeners.before.event_exited.dapui_config = function()
 	dapui.close()
 end
 
-dap.adapters.lldb = {
-	type = "executable",
-	command = "/usr/bin/lldb-dap-19",
-	name = "lldb",
-}
+-- A function so lldb-dap is only looked up when a debug session starts
+dap.adapters.lldb = function(callback)
+	local command = require("util.lldb").path()
+	if not command then
+		vim.notify("lldb-dap not found", vim.log.levels.ERROR)
+		return
+	end
+	callback({
+		type = "executable",
+		command = command,
+		name = "lldb",
+	})
+end
 
 dap.configurations.rust = {
 	{
