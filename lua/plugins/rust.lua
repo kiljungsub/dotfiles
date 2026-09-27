@@ -9,18 +9,12 @@ vim.g.rustaceanvim = {
 		},
 	},
 	dap = {
-		-- Not detected automatically when lldb-dap has a version suffix or lives in Xcode
-		adapter = function()
-			local command = require("util.lldb").path()
-			if not command then
-				return false
-			end
-			return {
-				type = "executable",
-				command = command,
-				name = "rt_lldb",
-			}
-		end,
+		-- Not detected automatically because of the version suffix
+		adapter = {
+			type = "executable",
+			command = "/usr/bin/lldb-dap-19",
+			name = "rt_lldb",
+		},
 	},
 }
 

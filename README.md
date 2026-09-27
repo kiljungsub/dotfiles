@@ -6,16 +6,13 @@ Main focus: Rust, Lua, TypeScript/JavaScript and Python.
 
 ## Requirements
 
-Works on Linux and macOS.
-
 - Neovim >= 0.12
 - `git` and `make` (to build `telescope-fzf-native`)
 - A C compiler and `tree-sitter` CLI 0.26.1+ (for treesitter parsers; not the npm package)
 - `ripgrep` (for `live_grep`)
 - Node.js (for GitHub Copilot; run `:Copilot setup` once)
 - Rust: `rustc` and `rust-analyzer` (e.g. via `rustup component add rust-analyzer`)
-- Rust debugging: `lldb-dap`. Found automatically on `PATH`, via `xcrun` (Xcode on
-  macOS), or as a versioned binary such as `/usr/bin/lldb-dap-19` (see `lua/util/lldb.lua`)
+- Rust debugging: `/usr/bin/lldb-dap-19`
 
 ### Language servers, formatters and linters
 
@@ -31,14 +28,12 @@ These must be on `PATH`:
 | `black`, `isort`             | Python formatting                        |
 | `eslint_d`                   | JS/TS linting (needs an ESLint config in the project) |
 
-Install them either with Mason:
+Install them with Mason:
 
 ```
 :MasonInstall lua-language-server typescript-language-server postgres-language-server stylua prettierd black isort eslint_d
 ```
 
-or with your system package manager (e.g. MacPorts, npm). Mason appends its
-`bin` directory to `PATH`, so system-installed tools take precedence.
 Check with `:checkhealth null-ls` and `:checkhealth vim.lsp`.
 
 ## Install
@@ -60,7 +55,6 @@ lua/vim-options.lua   editor options, leader keys
 lua/config/pack.lua   build hooks and load order of plugin modules
 lua/plugins/          one file per plugin (or group of plugins); each calls
                       vim.pack.add() and then configures its plugins
-lua/util/             helpers shared between plugin modules
 after/ftplugin/       filetype-specific overrides
 nvim-pack-lock.json   plugin revisions (commit this)
 ```
