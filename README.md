@@ -77,6 +77,8 @@ Leader is `<Space>`, local leader is `\`.
 | `<leader>gf`  | n      | Format buffer                     |
 | `<leader>b`   | n      | Toggle breakpoint                 |
 | `<F5>`        | n      | Start / continue debugging        |
+| `<leader>du`  | n      | Toggle debugger UI (dap-ui)       |
+| `<leader>dq`  | n      | Stop debugging                    |
 | `<Esc>`       | t      | Leave terminal mode               |
 
 ### Git
