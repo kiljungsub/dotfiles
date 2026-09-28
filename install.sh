@@ -89,18 +89,25 @@ install_tree_sitter_cli() {
   log "$(tree-sitter --version) installed"
 }
 
-link_config() {
-  local target="$CONFIG_DIR/nvim"
+# link <source in dotfiles> <target>; an existing non-symlink target is
+# moved to <target>.bak first
+link() {
+  local source="$DOTFILES_DIR/$1" target="$2"
 
-  mkdir -p "$CONFIG_DIR"
+  mkdir -p "$(dirname "$target")"
   if [ -e "$target" ] && [ ! -L "$target" ]; then
     log "Backing up existing $target to $target.bak"
     rm -rf "$target.bak"
     mv "$target" "$target.bak"
   fi
-  ln -sfn "$DOTFILES_DIR/nvim" "$target"
+  ln -sfn "$source" "$target"
 
-  log "Linked $target -> $DOTFILES_DIR/nvim"
+  log "Linked $target -> $source"
+}
+
+link_config() {
+  link nvim "$CONFIG_DIR/nvim"
+  link tmux/.tmux.conf "$HOME/.tmux.conf"
 }
 
 install_plugins() {
