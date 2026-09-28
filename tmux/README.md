@@ -54,22 +54,36 @@ should paste `hello`:
 printf '\033]52;c;%s\a' "$(printf hello | base64)"
 ```
 
-## Truecolor in devcontainers
+## Devcontainer environment
 
-`devcontainer exec` doesn't pass the host's `COLORTERM` into the container, so
-programs that check it (including Neovim started outside tmux) fall back to
-256 colours. Set it in `devcontainer.json`:
+`devcontainer exec` doesn't pass the host's `COLORTERM` or `LANG` into the
+container, and images like `rust:latest` don't set a locale. Set both in
+`devcontainer.json`:
 
 ```jsonc
 {
   "remoteEnv": {
-    "COLORTERM": "truecolor"
+    "COLORTERM": "truecolor",
+    "LANG": "C.UTF-8"
   }
 }
 ```
 
-To check, run this inside tmux; it should print a smooth gradient:
+- `COLORTERM`: without it, programs that check it (including Neovim started
+  outside tmux) fall back to 256 colours.
+- `LANG`: tmux decides per client whether the terminal supports UTF-8 by
+  checking `LC_ALL`, `LC_CTYPE` and `LANG`. If none mentions UTF-8, it draws
+  every non-ASCII character as `_`. `C.UTF-8` is built into glibc, so the
+  `locales` package isn't needed. `tmux -u` forces UTF-8 as a one-off
+  alternative.
+
+Restart the container after changing `remoteEnv`, then reattach to tmux.
+
+To check truecolor, run this inside tmux; it should print a smooth gradient:
 
 ```sh
 awk 'BEGIN { for (i = 0; i < 256; i++) printf "\033[48;2;%d;0;%dm \033[0m", i, 255 - i; print "" }'
 ```
+
+To check UTF-8, `printf '→ ✓ ─\n'` inside tmux should print the symbols, not
+underscores.

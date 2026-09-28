@@ -53,12 +53,15 @@ attaches to the `main` session if it already exists, so running the `exec`
 command again reconnects to the same session. Detach with `<C-b> d`; the
 session keeps running in the container.
 
-For truecolor, add this to the project's `devcontainer.json` (see
-[tmux/README.md](tmux/README.md#truecolor-in-devcontainers)):
+For truecolor and Unicode characters, add this to the project's
+`devcontainer.json` (see
+[tmux/README.md](tmux/README.md#devcontainer-environment)). Without a UTF-8
+`LANG`, tmux shows non-ASCII characters as `_`:
 
 ```jsonc
 "remoteEnv": {
-  "COLORTERM": "truecolor"
+  "COLORTERM": "truecolor",
+  "LANG": "C.UTF-8"
 }
 ```
 
