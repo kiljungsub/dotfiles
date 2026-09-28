@@ -40,12 +40,23 @@ end
 -- lldb disables ASLR with personality(2) by default, which Docker's seccomp
 -- profile blocks ("personality set failed"). Keep ASLR on for every lldb
 -- launch, including the ones rustaceanvim builds.
+-- lldb-dap-19 only ever sets the disable-ASLR flag from the target setting,
+-- so `disableASLR = false` alone is ignored; flip the setting itself.
+local keep_aslr = "settings set target.disable-aslr false"
 dap.listeners.on_config["keep-aslr"] = function(config)
-	if config.type ~= "lldb" or config.request ~= "launch" or config.disableASLR ~= nil then
+	if config.type ~= "lldb" or config.request ~= "launch" then
 		return config
 	end
 	config = vim.deepcopy(config)
 	config.disableASLR = false
+	local pre_run = config.preRunCommands
+	if type(pre_run) == "function" then
+		config.preRunCommands = function()
+			return vim.list_extend({ keep_aslr }, pre_run())
+		end
+	else
+		config.preRunCommands = vim.list_extend({ keep_aslr }, pre_run or {})
+	end
 	return config
 end
 

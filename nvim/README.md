@@ -21,8 +21,10 @@ Main focus: Rust, Lua, TypeScript/JavaScript and Python.
 - `curl` or `wget`, `unzip`, `tar` and `gzip` (for Mason downloads)
 - Rust: `rustc` and `rust-analyzer` (e.g. via `rustup component add rust-analyzer`)
 - Rust debugging: `/usr/bin/lldb-dap-19`. lldb launches with ASLR left on
-  (`disableASLR = false`), because Docker's default seccomp profile blocks
-  turning it off ("personality set failed: Operation not permitted")
+  (`settings set target.disable-aslr false` in `preRunCommands`), because
+  Docker's default seccomp profile blocks turning it off ("personality set
+  failed: Operation not permitted"). lldb-dap-19 ignores `disableASLR = false`
+  on its own
 
 ### Language servers, formatters and linters
 
