@@ -74,6 +74,16 @@ nvim-pack-lock.json   plugin revisions (commit this)
 To add a plugin, add it to a `vim.pack.add()` call (or a new file in
 `lua/plugins/` required from `lua/config/pack.lua`) and restart.
 
+## Clipboard
+
+The `+` and `*` registers use OSC 52, so `"+y` copies to the host clipboard
+from devcontainers, SSH and tmux without `xclip` or `wl-copy`. The terminal
+must support OSC 52; inside tmux, see [tmux/README.md](../tmux/README.md).
+
+Most terminals (e.g. Windows Terminal) don't allow reading the clipboard
+through OSC 52, so `"+p` pastes the last yank. To paste from the host, use the
+terminal's paste key (e.g. `<C-S-v>` or `<C-v>`).
+
 ## Key mappings
 
 Leader is `<Space>`, local leader is `\`.

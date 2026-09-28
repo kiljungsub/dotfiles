@@ -39,6 +39,20 @@ vim.api.nvim_command("autocmd TermEnter * setlocal signcolumn=no")
 
 vim.keymap.set("t", "<esc>", "<C-\\><C-n>")
 
+-- clipboard: copy with OSC 52 so "+y reaches the host clipboard from
+-- containers, SSH and tmux. Many terminals (e.g. Windows Terminal) don't
+-- allow reading the clipboard with OSC 52, so "+p pastes the last yank
+-- instead; paste from the host with the terminal's paste key.
+local osc52 = require("vim.ui.clipboard.osc52")
+local function paste()
+	return { vim.fn.split(vim.fn.getreg(""), "\n"), vim.fn.getregtype("") }
+end
+vim.g.clipboard = {
+	name = "OSC 52",
+	copy = { ["+"] = osc52.copy("+"), ["*"] = osc52.copy("*") },
+	paste = { ["+"] = paste, ["*"] = paste },
+}
+
 -- tmux
 vim.opt.autoread = true
 vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter", "CursorHold" }, {
