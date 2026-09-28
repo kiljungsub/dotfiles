@@ -53,13 +53,22 @@ attaches to the `main` session if it already exists, so running the `exec`
 command again reconnects to the same session. Detach with `<C-b> d`; the
 session keeps running in the container.
 
+For truecolor, add this to the project's `devcontainer.json` (see
+[tmux/README.md](tmux/README.md#truecolor-in-devcontainers)):
+
+```jsonc
+"remoteEnv": {
+  "COLORTERM": "truecolor"
+}
+```
+
 ### Image requirements
 
 The script does not install system packages. The image must provide:
 
 - `curl`, `tar`, `gzip` and `unzip`
 - `git`, `make` and a C compiler
-- `tmux` (the script only links `~/.tmux.conf`)
+- `tmux` >= 3.2 (the script only links `~/.tmux.conf`)
 - `ripgrep` (`fd-find` is optional; Telescope uses it for `find_files` when
   present)
 - Python 3 with `venv` (for `black` and `isort`). `pip` is not needed, but on
