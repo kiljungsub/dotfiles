@@ -29,7 +29,9 @@ devcontainer dotfiles repository. It:
 
 1. Installs the latest Neovim release to `~/.local/nvim` (linked from
    `~/.local/bin/nvim`)
-2. Installs Node.js LTS through [nvm](https://github.com/nvm-sh/nvm)
+2. Installs Node.js LTS through [nvm](https://github.com/nvm-sh/nvm), unless
+   `node` is already on `PATH` (e.g. from the
+   `ghcr.io/devcontainers/features/node` feature)
 3. Installs `tree-sitter-cli` with `cargo` if available, otherwise with `npm`
 4. Links `nvim/` to `~/.config/nvim` and `tmux/.tmux.conf` to `~/.tmux.conf`
    (an existing file or directory is moved to `<target>.bak`)

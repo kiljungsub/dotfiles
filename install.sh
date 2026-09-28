@@ -10,7 +10,8 @@ NVIM_INSTALL_DIR="$HOME/.local/nvim"
 BIN_DIR="$HOME/.local/bin"
 CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}"
 NVM_VERSION="v0.40.3"
-export NVM_DIR="$HOME/.nvm"
+# Keep an NVM_DIR set by the image, e.g. by the devcontainers node feature
+export NVM_DIR="${NVM_DIR:-$HOME/.nvm}"
 
 MASON_PACKAGES=(
   lua-language-server
@@ -60,6 +61,11 @@ install_neovim() {
 }
 
 install_node() {
+  if command -v node >/dev/null 2>&1; then
+    log "Node.js $(node --version) already installed, skipping nvm"
+    return
+  fi
+
   if [ ! -s "$NVM_DIR/nvm.sh" ]; then
     log "Installing nvm $NVM_VERSION"
     curl -fsSL "https://raw.githubusercontent.com/nvm-sh/nvm/${NVM_VERSION}/install.sh" | bash
