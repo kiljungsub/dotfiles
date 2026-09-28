@@ -7,7 +7,7 @@ Personal configuration files.
 | Directory | Description                                                        |
 | --------- | ------------------------------------------------------------------ |
 | `nvim/`   | Neovim config (built-in `vim.pack`), see [nvim/README.md](nvim/README.md) |
-| `tmux/`   | tmux config (`.tmux.conf`)                                         |
+| `tmux/`   | tmux config, see [tmux/README.md](tmux/README.md)                  |
 
 ## Install
 
@@ -34,6 +34,22 @@ devcontainer dotfiles repository. It:
 4. Links `nvim/` to `~/.config/nvim` and `tmux/.tmux.conf` to `~/.tmux.conf`
    (an existing file or directory is moved to `<target>.bak`)
 5. Installs plugins, Mason packages and treesitter parsers headless
+
+### Usage
+
+With the [Dev Container CLI](https://github.com/devcontainers/cli), run these
+from the project folder to start the container with this repository as the
+dotfiles repository, then open tmux in it:
+
+```sh
+devcontainer up --dotfiles-repository mediact-kiljungsub/dotfiles
+devcontainer exec tmux new-session -A -s main
+```
+
+`install.sh` runs once, when the container is created. `new-session -A -s main`
+attaches to the `main` session if it already exists, so running the `exec`
+command again reconnects to the same session. Detach with `<C-b> d`; the
+session keeps running in the container.
 
 ### Image requirements
 
