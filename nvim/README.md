@@ -39,7 +39,8 @@ Check with `:checkhealth null-ls` and `:checkhealth vim.lsp`.
 ## Install
 
 ```sh
-git clone <repo-url> ~/.config/nvim
+git clone git@github.com:mediact-kiljungsub/dotfiles.git ~/Developer/dotfiles
+ln -s ~/Developer/dotfiles/nvim ~/.config/nvim
 nvim
 ```
 
