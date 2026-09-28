@@ -1,8 +1,9 @@
 -- Parsers are updated by the PackChanged hook in config/pack.lua
 vim.pack.add({ "https://github.com/nvim-treesitter/nvim-treesitter" })
 
--- Already installed parsers are skipped, so this is cheap on every startup
-require("nvim-treesitter").install({
+-- Already installed parsers are skipped, so this is cheap on every startup.
+-- The task is returned so install.sh can wait for it when running headless.
+local install = require("nvim-treesitter").install({
 	"bash",
 	"c",
 	"css",
@@ -34,3 +35,5 @@ vim.api.nvim_create_autocmd("FileType", {
 		vim.wo[0][0].foldexpr = "v:lua.vim.treesitter.foldexpr()"
 	end,
 })
+
+return { install = install }

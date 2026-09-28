@@ -8,9 +8,17 @@ Main focus: Rust, Lua, TypeScript/JavaScript and Python.
 
 - Neovim >= 0.12
 - `git` and `make` (to build `telescope-fzf-native`)
-- A C compiler and `tree-sitter` CLI 0.26.1+ (for treesitter parsers; not the npm package)
-- `ripgrep` (for `live_grep`)
-- Node.js (for GitHub Copilot; run `:Copilot setup` once)
+- A C compiler and `tree-sitter` CLI 0.26.1+ (for treesitter parsers), installed
+  with `cargo install --locked tree-sitter-cli` or `npm install -g tree-sitter-cli`
+  (not the `tree-sitter` npm package, which is only the Node.js bindings)
+- `ripgrep` (for `live_grep`, and `find_files` when `fd` is missing)
+- Optional: `fd` / `fdfind` (used by `find_files` when available)
+- Node.js (for GitHub Copilot and the npm-based Mason packages; run
+  `:Copilot setup` once)
+- Python 3 with `venv` (for Mason to install `black` and `isort`). `pip` is not
+  needed, but on Debian/Ubuntu `python3 -m venv` fails without the
+  `python3-venv` package
+- `curl` or `wget`, `unzip`, `tar` and `gzip` (for Mason downloads)
 - Rust: `rustc` and `rust-analyzer` (e.g. via `rustup component add rust-analyzer`)
 - Rust debugging: `/usr/bin/lldb-dap-19`
 
@@ -47,6 +55,9 @@ nvim
 On first start `vim.pack` asks to install the plugins and installs them at the
 revisions pinned in `nvim-pack-lock.json`. Treesitter parsers are then built
 in the background.
+
+In a devcontainer, `install.sh` at the repository root does all of this
+headless, including the Mason packages; see the [top-level README](../README.md).
 
 ## Layout
 
