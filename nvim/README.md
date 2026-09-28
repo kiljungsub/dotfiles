@@ -20,7 +20,9 @@ Main focus: Rust, Lua, TypeScript/JavaScript and Python.
   `python3-venv` package
 - `curl` or `wget`, `unzip`, `tar` and `gzip` (for Mason downloads)
 - Rust: `rustc` and `rust-analyzer` (e.g. via `rustup component add rust-analyzer`)
-- Rust debugging: `/usr/bin/lldb-dap-19`
+- Rust debugging: `/usr/bin/lldb-dap-19`. lldb launches with ASLR left on
+  (`disableASLR = false`), because Docker's default seccomp profile blocks
+  turning it off ("personality set failed: Operation not permitted")
 
 ### Language servers, formatters and linters
 

@@ -37,6 +37,18 @@ dap.listeners.before.event_exited.dapui_config = function()
 	dapui.close()
 end
 
+-- lldb disables ASLR with personality(2) by default, which Docker's seccomp
+-- profile blocks ("personality set failed"). Keep ASLR on for every lldb
+-- launch, including the ones rustaceanvim builds.
+dap.listeners.on_config["keep-aslr"] = function(config)
+	if config.type ~= "lldb" or config.request ~= "launch" or config.disableASLR ~= nil then
+		return config
+	end
+	config = vim.deepcopy(config)
+	config.disableASLR = false
+	return config
+end
+
 dap.adapters.lldb = {
 	type = "executable",
 	command = "/usr/bin/lldb-dap-19",
