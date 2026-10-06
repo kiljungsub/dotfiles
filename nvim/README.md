@@ -60,8 +60,11 @@ On first start `vim.pack` asks to install the plugins and installs them at the
 revisions pinned in `nvim-pack-lock.json`. Treesitter parsers are then built
 in the background.
 
-In a devcontainer, `install.sh` at the repository root does all of this
-headless, including the Mason packages; see the [top-level README](../README.md).
+Then install the language servers, formatters and linters with
+`:MasonInstall` (see above).
+
+In a devcontainer, `install.sh` at the repository root installs Neovim and
+creates the link; see the [top-level README](../README.md).
 
 ## Layout
 

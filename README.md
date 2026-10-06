@@ -35,7 +35,9 @@ devcontainer dotfiles repository. It:
 3. Installs `tree-sitter-cli` with `cargo` if available, otherwise with `npm`
 4. Links `nvim/` to `~/.config/nvim` and `tmux/.tmux.conf` to `~/.tmux.conf`
    (an existing file or directory is moved to `<target>.bak`)
-5. Installs plugins, Mason packages and treesitter parsers headless
+
+Plugins and treesitter parsers install the first time you start `nvim`, and
+Mason packages with `:MasonInstall` (see [nvim/README.md](nvim/README.md#install)).
 
 ### Usage
 
@@ -83,5 +85,4 @@ The script does not install system packages. The image must provide:
    && rm -rf /var/lib/apt/lists/*
   ```
 
-`~/.local/bin` must be on `PATH`. Errors inside headless Neovim don't fail the
-script, so check the build log or `:Mason` if a tool is missing.
+`~/.local/bin` must be on `PATH`.

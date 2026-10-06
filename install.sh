@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 # Dotfiles installer, run by devcontainers when the dotfiles option is used.
-# Installs Neovim, Node.js (nvm) and tree-sitter-cli, links the Neovim
-# config and installs plugins, Mason tools and treesitter parsers headless.
+# Installs Neovim, Node.js (nvm) and tree-sitter-cli, and links the Neovim
+# and tmux configs. Plugins and treesitter parsers install on Neovim's first
+# start; Mason packages with :MasonInstall.
 # fd-find, ripgrep, git, make and a C compiler come from the Dockerfile.
 set -euo pipefail
 
@@ -12,17 +13,6 @@ CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}"
 NVM_VERSION="v0.40.3"
 # Keep an NVM_DIR set by the image, e.g. by the devcontainers node feature
 export NVM_DIR="${NVM_DIR:-$HOME/.nvm}"
-
-MASON_PACKAGES=(
-  lua-language-server
-  typescript-language-server
-  postgres-language-server
-  stylua
-  prettierd
-  black
-  isort
-  eslint_d
-)
 
 export PATH="$BIN_DIR:$HOME/.cargo/bin:$PATH"
 
@@ -116,34 +106,11 @@ link_config() {
   link tmux/.tmux.conf "$HOME/.tmux.conf"
 }
 
-install_plugins() {
-  log "Installing Neovim plugins"
-  # vim.pack.add() asks before installing; skip the prompt when headless.
-  # Plugins are installed at the revisions in nvim-pack-lock.json.
-  nvim --headless \
-    --cmd "lua local add = vim.pack.add; vim.pack.add = function(specs, opts) return add(specs, vim.tbl_extend('force', opts or {}, { confirm = false })) end" \
-    +qa
-}
-
-install_mason_packages() {
-  log "Installing Mason packages"
-  # :MasonInstall blocks until done when running headless
-  nvim --headless -c "MasonInstall ${MASON_PACKAGES[*]}" -c qa
-}
-
-install_parsers() {
-  log "Installing treesitter parsers"
-  nvim --headless -c "lua require('plugins.treesitter').install:wait(30 * 60 * 1000)" -c qa
-}
-
 main() {
   install_neovim
   install_node
   install_tree_sitter_cli
   link_config
-  install_plugins
-  install_mason_packages
-  install_parsers
   log "Done"
 }
 
