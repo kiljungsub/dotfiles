@@ -27,16 +27,17 @@ If a config already exists at the target, move it out of the way first
 `install.sh` is run automatically when this repository is used as the
 devcontainer dotfiles repository. It:
 
-1. Installs the latest Neovim release to `~/.local/nvim` (linked from
-   `~/.local/bin/nvim`)
-2. Installs Node.js LTS through [nvm](https://github.com/nvm-sh/nvm), unless
+1. Installs Node.js LTS through [nvm](https://github.com/nvm-sh/nvm), unless
    `node` is already on `PATH` (e.g. from the
    `ghcr.io/devcontainers/features/node` feature)
-3. Installs `tree-sitter-cli` with
-   [`cargo-binstall`](https://github.com/cargo-bins/cargo-binstall) (installed
-   first if missing) when `cargo` is available, otherwise with `npm`.
-   `cargo-binstall` downloads a prebuilt binary instead of compiling it
-4. Links `nvim/` to `~/.config/nvim` and `tmux/.tmux.conf` to `~/.tmux.conf`
+2. Installs [`cargo-binstall`](https://github.com/cargo-bins/cargo-binstall)
+   when `cargo` is available, unless it's already installed. It downloads
+   prebuilt binaries instead of compiling them
+3. Installs the latest Neovim release to `~/.local/nvim` (linked from
+   `~/.local/bin/nvim`)
+4. Installs `tree-sitter-cli` with `cargo-binstall` if available, otherwise
+   with `npm`
+5. Links `nvim/` to `~/.config/nvim` and `tmux/.tmux.conf` to `~/.tmux.conf`
    (an existing file or directory is moved to `<target>.bak`)
 
 Plugins and treesitter parsers install the first time you start `nvim`, and

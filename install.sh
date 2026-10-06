@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # Dotfiles installer, run by devcontainers when the dotfiles option is used.
-# Installs Neovim, Node.js (nvm) and tree-sitter-cli, and links the Neovim
-# and tmux configs. Plugins and treesitter parsers install on Neovim's first
-# start; Mason packages with :MasonInstall.
+# Installs Neovim, Node.js (nvm), cargo-binstall and tree-sitter-cli, and
+# links the Neovim and tmux configs. Plugins and treesitter parsers install on
+# Neovim's first start; Mason packages with :MasonInstall.
 # fd-find, ripgrep, git, make and a C compiler come from the Dockerfile.
 set -euo pipefail
 
@@ -73,15 +73,27 @@ install_node() {
   log "Node.js $(node --version) installed"
 }
 
+# cargo-binstall downloads a prebuilt binary instead of compiling, and only
+# builds from source if none is available for this platform
+install_cargo_binstall() {
+  if ! command -v cargo >/dev/null 2>&1; then
+    log "cargo not found, skipping cargo-binstall"
+    return
+  fi
+  if command -v cargo-binstall >/dev/null 2>&1; then
+    log "cargo-binstall $(cargo binstall -V | head -n1) already installed"
+    return
+  fi
+
+  log "Installing cargo-binstall"
+  curl -L --proto '=https' --tlsv1.2 -sSf \
+    https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash
+
+  log "cargo-binstall $(cargo binstall -V | head -n1) installed"
+}
+
 install_tree_sitter_cli() {
-  if command -v cargo >/dev/null 2>&1; then
-    # cargo-binstall downloads a prebuilt binary instead of compiling, and
-    # only builds from source if none is available for this platform
-    if ! command -v cargo-binstall >/dev/null 2>&1; then
-      log "Installing cargo-binstall"
-      curl -L --proto '=https' --tlsv1.2 -sSf \
-        https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash
-    fi
+  if command -v cargo-binstall >/dev/null 2>&1; then
     log "Installing tree-sitter-cli with cargo-binstall"
     cargo binstall --no-confirm --locked tree-sitter-cli
   else
@@ -114,8 +126,9 @@ link_config() {
 }
 
 main() {
-  install_neovim
   install_node
+  install_cargo_binstall
+  install_neovim
   install_tree_sitter_cli
   link_config
   log "Done"
