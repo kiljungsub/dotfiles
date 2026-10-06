@@ -75,8 +75,15 @@ install_node() {
 
 install_tree_sitter_cli() {
   if command -v cargo >/dev/null 2>&1; then
-    log "Installing tree-sitter-cli with cargo"
-    cargo install --locked tree-sitter-cli
+    # cargo-binstall downloads a prebuilt binary instead of compiling, and
+    # only builds from source if none is available for this platform
+    if ! command -v cargo-binstall >/dev/null 2>&1; then
+      log "Installing cargo-binstall"
+      curl -L --proto '=https' --tlsv1.2 -sSf \
+        https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash
+    fi
+    log "Installing tree-sitter-cli with cargo-binstall"
+    cargo binstall --no-confirm --locked tree-sitter-cli
   else
     log "Installing tree-sitter-cli with npm"
     npm install -g tree-sitter-cli

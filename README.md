@@ -32,7 +32,10 @@ devcontainer dotfiles repository. It:
 2. Installs Node.js LTS through [nvm](https://github.com/nvm-sh/nvm), unless
    `node` is already on `PATH` (e.g. from the
    `ghcr.io/devcontainers/features/node` feature)
-3. Installs `tree-sitter-cli` with `cargo` if available, otherwise with `npm`
+3. Installs `tree-sitter-cli` with
+   [`cargo-binstall`](https://github.com/cargo-bins/cargo-binstall) (installed
+   first if missing) when `cargo` is available, otherwise with `npm`.
+   `cargo-binstall` downloads a prebuilt binary instead of compiling it
 4. Links `nvim/` to `~/.config/nvim` and `tmux/.tmux.conf` to `~/.tmux.conf`
    (an existing file or directory is moved to `<target>.bak`)
 

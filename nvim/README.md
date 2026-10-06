@@ -9,7 +9,8 @@ Main focus: Rust, Lua, TypeScript/JavaScript and Python.
 - Neovim >= 0.12
 - `git` and `make` (to build `telescope-fzf-native`)
 - A C compiler and `tree-sitter` CLI 0.26.1+ (for treesitter parsers), installed
-  with `cargo install --locked tree-sitter-cli` or `npm install -g tree-sitter-cli`
+  with `cargo binstall tree-sitter-cli` (prebuilt, fast),
+  `cargo install --locked tree-sitter-cli` or `npm install -g tree-sitter-cli`
   (not the `tree-sitter` npm package, which is only the Node.js bindings)
 - `ripgrep` (for `live_grep`, and `find_files` when `fd` is missing)
 - Optional: `fd` / `fdfind` (used by `find_files` when available)
