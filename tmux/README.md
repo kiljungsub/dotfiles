@@ -15,7 +15,7 @@ inside tmux.
 ## Install
 
 ```sh
-git clone https://github.com/mediact-kiljungsub/dotfiles.git ~/Developer/dotfiles
+git clone https://github.com/kiljungsub/dotfiles.git ~/Developer/dotfiles
 ln -s ~/Developer/dotfiles/tmux/.tmux.conf ~/.tmux.conf
 ```
 

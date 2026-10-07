@@ -14,7 +14,7 @@ Personal configuration files.
 Clone the repository and symlink each config into place:
 
 ```sh
-git clone https://github.com/mediact-kiljungsub/dotfiles.git ~/Developer/dotfiles
+git clone https://github.com/kiljungsub/dotfiles.git ~/Developer/dotfiles
 ln -s ~/Developer/dotfiles/nvim ~/.config/nvim
 ln -s ~/Developer/dotfiles/tmux/.tmux.conf ~/.tmux.conf
 ```
@@ -50,7 +50,7 @@ from the project folder to start the container with this repository as the
 dotfiles repository, then open tmux in it:
 
 ```sh
-devcontainer up --dotfiles-repository mediact-kiljungsub/dotfiles
+devcontainer up --dotfiles-repository kiljungsub/dotfiles
 devcontainer exec tmux new-session -A -s main
 ```
 
