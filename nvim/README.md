@@ -36,6 +36,7 @@ These must be on `PATH`:
 | `lua-language-server`        | Lua LSP (`lua_ls`)                       |
 | `typescript-language-server` | TypeScript/JavaScript LSP (`ts_ls`)      |
 | `postgres-language-server`   | SQL LSP (`postgres_lsp`); only starts in projects with a `postgres-language-server.jsonc` |
+| `emmet-language-server`      | Emmet abbreviations (`emmet_language_server`) |
 | `stylua`                     | Lua formatting                           |
 | `prettierd`                  | JS/TS, JSON, CSS, HTML, Markdown, YAML formatting |
 | `black`, `isort`             | Python formatting                        |
@@ -44,7 +45,7 @@ These must be on `PATH`:
 Install them with Mason:
 
 ```
-:MasonInstall lua-language-server typescript-language-server postgres-language-server stylua prettierd black isort eslint_d
+:MasonInstall lua-language-server typescript-language-server postgres-language-server emmet-language-server stylua prettierd black isort eslint_d
 ```
 
 Check with `:checkhealth null-ls` and `:checkhealth vim.lsp`.

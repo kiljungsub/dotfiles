@@ -22,6 +22,7 @@ vim.api.nvim_create_autocmd("PackChanged", {
 -- Order matters: a module can only use plugins added before it.
 require("plugins.colorscheme")
 require("plugins.completions")
+require("plugins.autopairs")
 require("plugins.lsp-config")
 require("plugins.none-ls")
 require("plugins.telescope")
