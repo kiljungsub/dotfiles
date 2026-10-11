@@ -26,6 +26,10 @@ Main focus: Rust, Lua, TypeScript/JavaScript and Python.
   Docker's default seccomp profile blocks turning it off ("personality set
   failed: Operation not permitted"). lldb-dap-19 ignores `disableASLR = false`
   on its own
+- Optional: `psql` (`postgresql-client`), to run queries with vim-dadbod; see
+  [Databases](#databases-vim-dadbod). On Debian the package is usually an older
+  version; newer ones come from the PostgreSQL apt repository
+  (`apt.postgresql.org`)
 
 ### Language servers, formatters and linters
 
@@ -37,6 +41,7 @@ These must be on `PATH`:
 | `typescript-language-server` | TypeScript/JavaScript LSP (`ts_ls`)      |
 | `postgres-language-server`   | SQL LSP (`postgres_lsp`); only starts in projects with a `postgres-language-server.jsonc` |
 | `emmet-language-server`      | Emmet abbreviations (`emmet_language_server`) |
+| `docker-language-server`      | Dockerfile, Compose and Bake LSP (`docker_language_server`) |
 | `stylua`                     | Lua formatting                           |
 | `prettierd`                  | JS/TS, JSON, CSS, HTML, Markdown, YAML formatting |
 | `black`, `isort`             | Python formatting                        |
@@ -45,7 +50,7 @@ These must be on `PATH`:
 Install them with Mason:
 
 ```
-:MasonInstall lua-language-server typescript-language-server postgres-language-server emmet-language-server stylua prettierd black isort eslint_d
+:MasonInstall lua-language-server typescript-language-server postgres-language-server emmet-language-server docker-language-server stylua prettierd black isort eslint_d
 ```
 
 Check with `:checkhealth null-ls` and `:checkhealth vim.lsp`.
@@ -106,6 +111,7 @@ Leader is `<Space>`, local leader is `\`.
 | `gd`          | n      | Go to definition                  |
 | `<leader>a`   | n, v   | Code action                       |
 | `<leader>gf`  | n      | Format buffer                     |
+| `<leader>D`   | n      | Toggle database UI (dadbod-ui)    |
 | `<leader>b`   | n      | Toggle breakpoint                 |
 | `<F5>`        | n      | Start / continue debugging        |
 | `<leader>du`  | n      | Toggle debugger UI (dap-ui)       |
@@ -156,6 +162,52 @@ Gitsigns shows added/changed/deleted lines in the sign column.
 | `<Tab>` / `<S-Tab>` | Next / previous field        |
 | `<Enter>` / `<S-Enter>` | Next / previous row      |
 | `if` / `af`         | Inner / outer field text object |
+
+### Databases (vim-dadbod)
+
+vim-dadbod runs queries through the database's CLI, so `psql`
+(`postgresql-client`) must be installed. `<leader>D` toggles the DB UI
+(vim-dadbod-ui).
+
+**Connections.** Don't commit them: URLs in `vim.g.dbs` end up in this
+repository. Instead:
+
+- Export `DBUI_URL` (and optionally `DBUI_NAME`) before starting Neovim, e.g.
+  `export DBUI_URL="postgres://postgres@localhost:5432/mydb"`. A `.env` file
+  needs `export` on each line to be used with `source .env`.
+- Or add one with `:DBUIAddConnection` (saved outside this repository, in
+  `g:db_ui_save_location`).
+
+**Passwords.** Leave them out of the URL. `psql` reads `PGPASSWORD` and
+`~/.pgpass` (`host:port:database:user:password`, `chmod 600`). To fetch a
+secret at connect time, `vim.g.dbs` accepts a function for `url`, e.g.
+`url = function() return vim.fn.system("get-url"):gsub("\n", "") end`. For
+Azure PostgreSQL with Microsoft Entra, the access token from
+`az account get-access-token` goes into `PGPASSWORD`.
+
+**Running a `.sql` file** (without the UI):
+
+| Command                  | Action                                      |
+| ------------------------ | ------------------------------------------- |
+| `:DB b:db = <url>`       | Set the database for this buffer            |
+| `:%DB`                   | Run the whole buffer on `b:db`/`$DATABASE_URL` |
+| `:'<,'>DB`               | Run the visual selection                    |
+| `:DB <url> < file.sql`   | Run a file on the given database            |
+
+Without a URL, the first of `w:db`, `t:db`, `b:db`, `$DATABASE_URL` and `g:db`
+is used. In the result window `R` reruns, `r` reruns interactively and `gq`
+closes it.
+
+**With the UI.** `:DBUIFindBuffer` assigns the current buffer to a connection;
+`<leader>S` then runs the buffer (normal mode) or the selection (visual mode).
+`g:db_ui_execute_on_save` defaults to 1 and runs DBUI-managed buffers on every
+save, so queries that change data run too. Set `vim.g.db_ui_execute_on_save = 0`
+to turn it off.
+
+Completion in SQL buffers combines the LSP, vim-dadbod-completion (tables and
+columns of the connected database) and words from the buffer.
+`postgres-language-server` only attaches in projects with a
+`postgres-language-server.jsonc`.
 
 ## Updating plugins
 
