@@ -106,6 +106,8 @@ Leader is `<Space>`, local leader is `\`.
 | ------------- | ------ | --------------------------------- |
 | `<C-p>`       | n      | Find files (Telescope)            |
 | `<leader>fg`  | n      | Live grep (Telescope)             |
+| `<leader>ft`  | n      | Find TODO/FIXME/... comments (Telescope) |
+| `]t` / `[t`   | n      | Next / previous TODO comment (replaces Neovim's default `:tnext` / `:tprevious`) |
 | `<leader>e`   | n      | Toggle file tree (Neo-tree)       |
 | `K`           | n      | LSP hover (rustaceanvim actions in Rust) |
 | `gd`          | n      | Go to definition                  |
