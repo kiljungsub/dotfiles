@@ -9,6 +9,12 @@ vim.pack.add({
 -- vim.g.dbs = { local_pg = "postgres://postgres@localhost:5432/mydb" }
 vim.g.db_ui_use_nerd_fonts = 0
 
+-- dadbod-ui only reads one variable (DBUI_URL) for a connection from the
+-- environment, so fall back to DATABASE_URL, which vim-dadbod itself uses
+if (vim.env.DBUI_URL or "") == "" and (vim.env.DATABASE_URL or "") ~= "" then
+	vim.env.DBUI_URL = vim.env.DATABASE_URL
+end
+
 vim.keymap.set("n", "<leader>D", "<cmd>DBUIToggle<CR>", { desc = "Toggle database UI" })
 
 -- Schema-aware completion next to the LSP (postgres-language-server only

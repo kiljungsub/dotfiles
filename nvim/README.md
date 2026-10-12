@@ -173,8 +173,11 @@ vim-dadbod runs queries through the database's CLI, so `psql`
 repository. Instead:
 
 - Export `DBUI_URL` (and optionally `DBUI_NAME`) before starting Neovim, e.g.
-  `export DBUI_URL="postgres://postgres@localhost:5432/mydb"`. A `.env` file
-  needs `export` on each line to be used with `source .env`.
+  `export DBUI_URL="postgres://postgres@localhost:5432/mydb"`. `DATABASE_URL`
+  is used when `DBUI_URL` is not set. Without `DBUI_NAME` the connection is
+  named after the last path segment of the URL. To load a plain `KEY=value`
+  `.env` file, which most tools read, run `set -a; source .env; set +a` in the
+  shell first so the variables are exported to Neovim.
 - Or add one with `:DBUIAddConnection` (saved outside this repository, in
   `g:db_ui_save_location`).
 
