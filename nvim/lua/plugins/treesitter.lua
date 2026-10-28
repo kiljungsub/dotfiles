@@ -4,6 +4,7 @@ vim.pack.add({ "https://github.com/nvim-treesitter/nvim-treesitter" })
 -- Already installed parsers are skipped, so this is cheap on every startup
 require("nvim-treesitter").install({
 	"bash",
+	"bicep",
 	"c",
 	"css",
 	"html",

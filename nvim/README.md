@@ -16,6 +16,8 @@ Main focus: Rust, Lua, TypeScript/JavaScript and Python.
 - Optional: `fd` / `fdfind` (used by `find_files` when available)
 - Node.js (for GitHub Copilot and the npm-based Mason packages; run
   `:Copilot setup` once)
+- .NET runtime 10.0 (`dotnet`), to run the Bicep language server
+  (`bicep-lsp`)
 - Python 3 with `venv` (for Mason to install `black` and `isort`). `pip` is not
   needed, but on Debian/Ubuntu `python3 -m venv` fails without the
   `python3-venv` package
@@ -35,22 +37,23 @@ Main focus: Rust, Lua, TypeScript/JavaScript and Python.
 
 These must be on `PATH`:
 
-| Tool                         | Used for                                 |
-| ---------------------------- | ---------------------------------------- |
-| `lua-language-server`        | Lua LSP (`lua_ls`)                       |
-| `typescript-language-server` | TypeScript/JavaScript LSP (`ts_ls`)      |
+| Tool                         | Used for                                                                                  |
+| ---------------------------- | ----------------------------------------------------------------------------------------- |
+| `lua-language-server`        | Lua LSP (`lua_ls`)                                                                        |
+| `typescript-language-server` | TypeScript/JavaScript LSP (`ts_ls`)                                                       |
 | `postgres-language-server`   | SQL LSP (`postgres_lsp`); only starts in projects with a `postgres-language-server.jsonc` |
-| `emmet-language-server`      | Emmet abbreviations (`emmet_language_server`) |
-| `docker-language-server`      | Dockerfile, Compose and Bake LSP (`docker_language_server`) |
-| `stylua`                     | Lua formatting                           |
-| `prettierd`                  | JS/TS, JSON, CSS, HTML, Markdown, YAML formatting |
-| `black`, `isort`             | Python formatting                        |
-| `eslint_d`                   | JS/TS linting (needs an ESLint config in the project) |
+| `emmet-language-server`      | Emmet abbreviations (`emmet_language_server`)                                             |
+| `bicep-lsp`                  | Bicep LSP (`bicep`), with linting and formatting built in                                 |
+| `docker-language-server`     | Dockerfile, Compose and Bake LSP (`docker_language_server`)                               |
+| `stylua`                     | Lua formatting                                                                            |
+| `prettierd`                  | JS/TS, JSON, CSS, HTML, Markdown, YAML formatting                                         |
+| `black`, `isort`             | Python formatting                                                                         |
+| `eslint_d`                   | JS/TS linting (needs an ESLint config in the project)                                     |
 
 Install them with Mason:
 
 ```
-:MasonInstall lua-language-server typescript-language-server postgres-language-server emmet-language-server docker-language-server stylua prettierd black isort eslint_d
+:MasonInstall lua-language-server typescript-language-server postgres-language-server emmet-language-server docker-language-server bicep-lsp stylua prettierd black isort eslint_d
 ```
 
 Check with `:checkhealth null-ls` and `:checkhealth vim.lsp`.
@@ -102,68 +105,68 @@ terminal's paste key (e.g. `<C-S-v>` or `<C-v>`).
 
 Leader is `<Space>`, local leader is `\`.
 
-| Keys          | Mode   | Action                            |
-| ------------- | ------ | --------------------------------- |
-| `<C-p>`       | n      | Find files (Telescope)            |
-| `<leader>fg`  | n      | Live grep (Telescope)             |
-| `<leader>ft`  | n      | Find TODO/FIXME/... comments (Telescope) |
-| `]t` / `[t`   | n      | Next / previous TODO comment (replaces Neovim's default `:tnext` / `:tprevious`) |
-| `<leader>e`   | n      | Toggle file tree (Neo-tree)       |
-| `K`           | n      | LSP hover (rustaceanvim actions in Rust) |
-| `gd`          | n      | Go to definition                  |
-| `<leader>a`   | n, v   | Code action                       |
-| `<leader>gf`  | n      | Format buffer                     |
-| `<leader>D`   | n      | Toggle database UI (dadbod-ui)    |
-| `<leader>b`   | n      | Toggle breakpoint                 |
-| `<F5>`        | n      | Start / continue debugging        |
-| `<leader>du`  | n      | Toggle debugger UI (dap-ui)       |
-| `<leader>dq`  | n      | Stop debugging                    |
-| `<Esc>`       | t      | Leave terminal mode               |
+| Keys         | Mode | Action                                                                           |
+| ------------ | ---- | -------------------------------------------------------------------------------- |
+| `<C-p>`      | n    | Find files (Telescope)                                                           |
+| `<leader>fg` | n    | Live grep (Telescope)                                                            |
+| `<leader>ft` | n    | Find TODO/FIXME/... comments (Telescope)                                         |
+| `]t` / `[t`  | n    | Next / previous TODO comment (replaces Neovim's default `:tnext` / `:tprevious`) |
+| `<leader>e`  | n    | Toggle file tree (Neo-tree)                                                      |
+| `K`          | n    | LSP hover (rustaceanvim actions in Rust)                                         |
+| `gd`         | n    | Go to definition                                                                 |
+| `<leader>a`  | n, v | Code action                                                                      |
+| `<leader>gf` | n    | Format buffer                                                                    |
+| `<leader>D`  | n    | Toggle database UI (dadbod-ui)                                                   |
+| `<leader>b`  | n    | Toggle breakpoint                                                                |
+| `<F5>`       | n    | Start / continue debugging                                                       |
+| `<leader>du` | n    | Toggle debugger UI (dap-ui)                                                      |
+| `<leader>dq` | n    | Stop debugging                                                                   |
+| `<Esc>`      | t    | Leave terminal mode                                                              |
 
 ### Git
 
-| Keys         | Action                                     |
-| ------------ | ------------------------------------------ |
-| `<leader>gd` | Toggle Diffview (uncommitted changes)      |
-| `<leader>gh` | History of the current file (Diffview)     |
-| `<leader>gH` | Repository history (Diffview)              |
-| `q`          | Close Diffview (inside a Diffview window)  |
+| Keys         | Action                                    |
+| ------------ | ----------------------------------------- |
+| `<leader>gd` | Toggle Diffview (uncommitted changes)     |
+| `<leader>gh` | History of the current file (Diffview)    |
+| `<leader>gH` | Repository history (Diffview)             |
+| `q`          | Close Diffview (inside a Diffview window) |
 
 Gitsigns shows added/changed/deleted lines in the sign column.
 
 ### Completion (insert mode)
 
-| Keys        | Action                 |
-| ----------- | ---------------------- |
-| `<C-Space>` | Open completion menu   |
-| `<CR>`      | Confirm selection      |
-| `<C-e>`     | Abort                  |
-| `<C-b>` / `<C-f>` | Scroll docs      |
+| Keys              | Action               |
+| ----------------- | -------------------- |
+| `<C-Space>`       | Open completion menu |
+| `<CR>`            | Confirm selection    |
+| `<C-e>`           | Abort                |
+| `<C-b>` / `<C-f>` | Scroll docs          |
 
 ### Crates (in `Cargo.toml`)
 
-| Keys         | Action                           |
-| ------------ | -------------------------------- |
-| `<leader>ct` | Toggle crates info               |
-| `<leader>cr` | Reload                           |
-| `<leader>cv` | Show versions popup              |
-| `<leader>cf` | Show features popup              |
-| `<leader>cd` | Show dependencies popup          |
-| `<leader>cu` | Update crate(s) (n / v)          |
-| `<leader>ca` | Update all crates                |
-| `<leader>cU` | Upgrade crate(s) (n / v)         |
-| `<leader>cA` | Upgrade all crates               |
-| `<leader>cx` | Expand plain crate to inline table |
-| `<leader>cX` | Extract crate into table         |
+| Keys                                     | Action                                                 |
+| ---------------------------------------- | ------------------------------------------------------ |
+| `<leader>ct`                             | Toggle crates info                                     |
+| `<leader>cr`                             | Reload                                                 |
+| `<leader>cv`                             | Show versions popup                                    |
+| `<leader>cf`                             | Show features popup                                    |
+| `<leader>cd`                             | Show dependencies popup                                |
+| `<leader>cu`                             | Update crate(s) (n / v)                                |
+| `<leader>ca`                             | Update all crates                                      |
+| `<leader>cU`                             | Upgrade crate(s) (n / v)                               |
+| `<leader>cA`                             | Upgrade all crates                                     |
+| `<leader>cx`                             | Expand plain crate to inline table                     |
+| `<leader>cX`                             | Extract crate into table                               |
 | `<leader>cH` / `cR` / `cD` / `cC` / `cL` | Open homepage / repository / docs / crates.io / lib.rs |
 
 ### CSV (after `:CsvViewEnable`)
 
-| Keys                | Action                       |
-| ------------------- | ---------------------------- |
-| `<Tab>` / `<S-Tab>` | Next / previous field        |
-| `<Enter>` / `<S-Enter>` | Next / previous row      |
-| `if` / `af`         | Inner / outer field text object |
+| Keys                    | Action                          |
+| ----------------------- | ------------------------------- |
+| `<Tab>` / `<S-Tab>`     | Next / previous field           |
+| `<Enter>` / `<S-Enter>` | Next / previous row             |
+| `if` / `af`             | Inner / outer field text object |
 
 ### Databases (vim-dadbod)
 
@@ -192,12 +195,12 @@ Azure PostgreSQL with Microsoft Entra, the access token from
 
 **Running a `.sql` file** (without the UI):
 
-| Command                  | Action                                      |
-| ------------------------ | ------------------------------------------- |
-| `:DB b:db = <url>`       | Set the database for this buffer            |
-| `:%DB`                   | Run the whole buffer on `b:db`/`$DATABASE_URL` |
-| `:'<,'>DB`               | Run the visual selection                    |
-| `:DB <url> < file.sql`   | Run a file on the given database            |
+| Command                | Action                                         |
+| ---------------------- | ---------------------------------------------- |
+| `:DB b:db = <url>`     | Set the database for this buffer               |
+| `:%DB`                 | Run the whole buffer on `b:db`/`$DATABASE_URL` |
+| `:'<,'>DB`             | Run the visual selection                       |
+| `:DB <url> < file.sql` | Run a file on the given database               |
 
 Without a URL, the first of `w:db`, `t:db`, `b:db`, `$DATABASE_URL` and `g:db`
 is used. In the result window `R` reruns, `r` reruns interactively and `gq`

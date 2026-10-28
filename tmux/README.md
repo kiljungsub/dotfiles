@@ -30,14 +30,14 @@ tmux source-file ~/.tmux.conf
 
 ## Settings
 
-| Setting             | Why                                                        |
-| ------------------- | ---------------------------------------------------------- |
-| `focus-events on`   | Passes focus events to programs in panes, so Neovim's `FocusGained` autocmd runs `:checktime` and reloads files changed outside Neovim |
-| `mouse on`          | Scroll wheel scrolls pane history, click selects panes and windows, dragging a border resizes, and dragging in a shell pane copies (to the host clipboard too, via OSC 52). Programs that use the mouse, like Neovim, still get mouse events |
-| `default-terminal "tmux-256color"` | Sets `TERM` inside tmux to a terminfo entry that matches tmux's features |
-| `terminal-features ",*:RGB"` | Tells tmux the outer terminal supports 24-bit colour, so truecolor output (e.g. Neovim with `termguicolors`) isn't reduced to 256 colours |
-| `set-clipboard on`  | Accepts OSC 52 from programs in panes (e.g. Neovim's `"+y`), stores it as a tmux buffer and forwards it to the outer terminal |
-| `terminal-features ",*:clipboard"` | Tells tmux the outer terminal accepts OSC 52, so copies reach the host clipboard |
+| Setting                            | Why                                                                                                                                                                                                                                          |
+| ---------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `focus-events on`                  | Passes focus events to programs in panes, so Neovim's `FocusGained` autocmd runs `:checktime` and reloads files changed outside Neovim                                                                                                       |
+| `mouse on`                         | Scroll wheel scrolls pane history, click selects panes and windows, dragging a border resizes, and dragging in a shell pane copies (to the host clipboard too, via OSC 52). Programs that use the mouse, like Neovim, still get mouse events |
+| `default-terminal "tmux-256color"` | Sets `TERM` inside tmux to a terminfo entry that matches tmux's features                                                                                                                                                                     |
+| `terminal-features ",*:RGB"`       | Tells tmux the outer terminal supports 24-bit colour, so truecolor output (e.g. Neovim with `termguicolors`) isn't reduced to 256 colours                                                                                                    |
+| `set-clipboard on`                 | Accepts OSC 52 from programs in panes (e.g. Neovim's `"+y`), stores it as a tmux buffer and forwards it to the outer terminal                                                                                                                |
+| `terminal-features ",*:clipboard"` | Tells tmux the outer terminal accepts OSC 52, so copies reach the host clipboard                                                                                                                                                             |
 
 With `mouse on`, tmux handles mouse selection. Hold `Shift` (Windows
 Terminal, most Linux terminals) or `Option` (iTerm2) while dragging to use the
@@ -64,7 +64,7 @@ container, and images like `rust:latest` don't set a locale. Set both in
 {
   "remoteEnv": {
     "COLORTERM": "truecolor",
-    "LANG": "C.UTF-8"
+    "LANG": "C.UTF-8",
   }
 }
 ```

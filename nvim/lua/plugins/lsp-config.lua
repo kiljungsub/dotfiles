@@ -16,7 +16,6 @@ require("mason-lspconfig").setup({
 
 vim.lsp.config("*", { capabilities = require("cmp_nvim_lsp").default_capabilities() })
 
--- rust-analyzer is started by rustaceanvim, don't enable it here
 -- docker_language_server only attaches to yaml.docker-compose, which Neovim
 -- doesn't detect on its own
 vim.filetype.add({
@@ -32,7 +31,20 @@ vim.filetype.add({
 	},
 })
 
-vim.lsp.enable({ "lua_ls", "ts_ls", "postgres_lsp", "emmet_language_server", "docker_language_server" })
+-- nvim-lspconfig has no default cmd for bicep; Mason's bicep-lsp wrapper runs
+-- the language server with dotnet. It also provides linting (bicepconfig.json
+-- rules) and formatting, so none-ls isn't needed.
+vim.lsp.config("bicep", { cmd = { "bicep-lsp" } })
+
+-- rust-analyzer is started by rustaceanvim, don't enable it here
+vim.lsp.enable({
+	"lua_ls",
+	"ts_ls",
+	"postgres_lsp",
+	"emmet_language_server",
+	"docker_language_server",
+	"bicep",
+})
 
 vim.keymap.set("n", "K", vim.lsp.buf.hover, {})
 vim.keymap.set("n", "gd", vim.lsp.buf.definition, {})

@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 # Dotfiles installer, run by devcontainers when the dotfiles option is used.
-# Installs Neovim, Node.js (nvm), cargo-binstall and tree-sitter-cli, and
-# links the Neovim and tmux configs. Plugins and treesitter parsers install on
-# Neovim's first start; Mason packages with :MasonInstall.
+# Installs Neovim, Node.js (nvm), the .NET runtime, cargo-binstall and
+# tree-sitter-cli, and links the Neovim and tmux configs. Plugins and
+# treesitter parsers install on Neovim's first start; Mason packages with
+# :MasonInstall.
 # fd-find, ripgrep, git, make and a C compiler come from the Dockerfile.
 set -euo pipefail
 
@@ -11,6 +12,8 @@ NVIM_INSTALL_DIR="$HOME/.local/nvim"
 BIN_DIR="$HOME/.local/bin"
 CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}"
 NVM_VERSION="v0.40.3"
+DOTNET_CHANNEL="10.0"
+DOTNET_INSTALL_DIR="$HOME/.dotnet"
 # Keep an NVM_DIR set by the image, e.g. by the devcontainers node feature
 export NVM_DIR="${NVM_DIR:-$HOME/.nvm}"
 
@@ -73,6 +76,30 @@ install_node() {
   log "Node.js $(node --version) installed"
 }
 
+# The Bicep language server runs on the .NET runtime (no SDK needed). The
+# install script puts it in user space, so no root is required.
+install_dotnet() {
+  if command -v dotnet >/dev/null 2>&1 &&
+    dotnet --list-runtimes | grep -q "^Microsoft.NETCore.App ${DOTNET_CHANNEL%%.*}\."; then
+    log ".NET runtime $DOTNET_CHANNEL already installed, skipping"
+    return
+  fi
+
+  local tmp_dir
+  tmp_dir="$(mktemp -d)"
+
+  log "Installing .NET runtime $DOTNET_CHANNEL"
+  curl -fsSL https://dot.net/v1/dotnet-install.sh -o "$tmp_dir/dotnet-install.sh"
+  bash "$tmp_dir/dotnet-install.sh" --runtime dotnet --channel "$DOTNET_CHANNEL" \
+    --install-dir "$DOTNET_INSTALL_DIR"
+  rm -rf "$tmp_dir"
+
+  mkdir -p "$BIN_DIR"
+  ln -sf "$DOTNET_INSTALL_DIR/dotnet" "$BIN_DIR/dotnet"
+
+  log ".NET runtime $("$BIN_DIR/dotnet" --list-runtimes | head -n1) installed"
+}
+
 # cargo-binstall downloads a prebuilt binary instead of compiling, and only
 # builds from source if none is available for this platform
 install_cargo_binstall() {
@@ -127,6 +154,7 @@ link_config() {
 
 main() {
   install_node
+  install_dotnet
   install_cargo_binstall
   install_neovim
   install_tree_sitter_cli

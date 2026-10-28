@@ -4,10 +4,10 @@ Personal configuration files.
 
 ## Contents
 
-| Directory | Description                                                        |
-| --------- | ------------------------------------------------------------------ |
+| Directory | Description                                                               |
+| --------- | ------------------------------------------------------------------------- |
 | `nvim/`   | Neovim config (built-in `vim.pack`), see [nvim/README.md](nvim/README.md) |
-| `tmux/`   | tmux config, see [tmux/README.md](tmux/README.md)                  |
+| `tmux/`   | tmux config, see [tmux/README.md](tmux/README.md)                         |
 
 ## Install
 
