@@ -36,6 +36,14 @@ vim.filetype.add({
 -- rules) and formatting, so none-ls isn't needed.
 vim.lsp.config("bicep", { cmd = { "bicep-lsp" } })
 
+-- Formatting goes through none-ls (prettierd); ts_ls would reformat the result
+vim.lsp.config("ts_ls", {
+	on_attach = function(client)
+		client.server_capabilities.documentFormattingProvider = false
+		client.server_capabilities.documentRangeFormattingProvider = false
+	end,
+})
+
 -- rust-analyzer is started by rustaceanvim, don't enable it here
 vim.lsp.enable({
 	"lua_ls",
