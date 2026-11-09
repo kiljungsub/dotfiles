@@ -125,14 +125,19 @@ Leader is `<Space>`, local leader is `\`.
 
 ### Git
 
-| Keys         | Action                                    |
-| ------------ | ----------------------------------------- |
-| `<leader>gd` | Toggle Diffview (uncommitted changes)     |
-| `<leader>gh` | History of the current file (Diffview)    |
-| `<leader>gH` | Repository history (Diffview)             |
-| `q`          | Close Diffview (inside a Diffview window) |
+| Keys         | Action                                                                |
+| ------------ | --------------------------------------------------------------------- |
+| `<leader>gd` | Toggle Diffview (uncommitted changes)                                 |
+| `<leader>gh` | History of the current file (Diffview)                                |
+| `<leader>gH` | Repository history (Diffview)                                         |
+| `q`          | Close Diffview (inside a Diffview window)                             |
+| `]c` / `[c`  | Next / previous hunk (next / previous change in diff mode)            |
+| `<leader>hp` | Preview the hunk under the cursor in a popup, including deleted lines |
+| `<leader>hi` | Preview the hunk under the cursor inline, including deleted lines     |
 
-Gitsigns shows added/changed/deleted lines in the sign column.
+Gitsigns shows added/changed/deleted lines in the sign column. The previews
+disappear when the cursor moves; press `<leader>hp` again to focus the popup,
+where `q` closes it.
 
 ### Completion (insert mode)
 
