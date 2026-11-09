@@ -136,12 +136,13 @@ Gitsigns shows added/changed/deleted lines in the sign column.
 
 ### Completion (insert mode)
 
-| Keys              | Action               |
-| ----------------- | -------------------- |
-| `<C-Space>`       | Open completion menu |
-| `<CR>`            | Confirm selection    |
-| `<C-e>`           | Abort                |
-| `<C-b>` / `<C-f>` | Scroll docs          |
+| Keys              | Action                                        |
+| ----------------- | --------------------------------------------- |
+| `<C-Space>`       | Open completion menu                          |
+| `<C-n>` / `<C-p>` | Next / previous item                          |
+| `<C-y>`           | Confirm selection (first item if none chosen) |
+| `<C-e>`           | Abort                                         |
+| `<C-b>` / `<C-f>` | Scroll docs                                   |
 
 ### Crates (in `Cargo.toml`)
 
