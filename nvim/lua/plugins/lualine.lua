@@ -6,6 +6,13 @@ require("lualine").setup({
 		component_separators = { left = "", right = "" },
 	},
 	sections = {
+		lualine_c = {
+			{
+				"filename",
+				-- Absolute path with $HOME shortened to ~
+				path = 3,
+			},
+		},
 		lualine_x = {
 			"encoding",
 			{
